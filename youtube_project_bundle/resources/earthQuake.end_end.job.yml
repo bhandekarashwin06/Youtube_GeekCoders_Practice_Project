@@ -1,0 +1,30 @@
+resources:
+  jobs:
+    Youtube_EarthQuake_End_End_Job:
+      name: Youtube_EarthQuake_End_End_Job
+      tasks:
+        - task_key: Ingestion_Bronze
+          notebook_task:
+            notebook_path: /Workspace/Youtube_GeekCoders_Practice_Project/Youtube_GeekCoders_Practice_Project/youtube_project_bundle/src/notebooks/Ingestion_Bronze
+            base_parameters:
+              catalog_name: youtube_dev
+            source: WORKSPACE
+        - task_key: Bronze_Silver_EarthQuake
+          depends_on:
+            - task_key: Ingestion_Bronze
+          pipeline_task:
+            pipeline_id: 0897a354-5ee6-44f5-a4a2-a0cb884a97c0
+            full_refresh: false
+        - task_key: EarthQuake_Dashboard
+          depends_on:
+            - task_key: Bronze_Silver_EarthQuake
+          dashboard_task:
+            subscription: {}
+            warehouse_id: 6a4e9783137f3457
+            dashboard_id: 01f128fe438d1509944c15bca06d13fb
+      queue:
+        enabled: true
+      parameters:
+        - name: catalog_name
+          default: youtube_dev
+      performance_target: PERFORMANCE_OPTIMIZED
