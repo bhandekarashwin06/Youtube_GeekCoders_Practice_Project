@@ -1,0 +1,19 @@
+# The main pipeline for youtube_project_bundle
+
+resources:
+  pipelines:
+    youtube_project_bundle_etl:
+      name: youtube_project_bundle_etl
+      catalog: ${var.catalog}
+      schema: ${var.shttps://dbc-4c4e54fb-d23f.cloud.databricks.com/editor/files/https://dbc-4c4e54fb-d23f.cloud.databricks.com/editor/files/3118143556123493?o=2161766258390896$03118143556123493?o=2161766258390896&contextId=folder%3A3118143556123476$0chema}
+      root_path: "../src/youtube_project_bundle_etl"
+
+      libraries:
+        - glob:
+            include: ../src/youtube_project_bundle_etl/transformations/**
+
+      environment:
+        dependencies:
+          # We include every dependency defined by pyproject.toml by defining an editable environment
+          # that points to the folder where pyproject.toml is deployed.
+          - --editable ${workspace.file_path}
